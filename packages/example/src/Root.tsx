@@ -283,6 +283,11 @@ import {
 import {JumpCuts, SAMPLE_SECTIONS, calculateMetadataJumpCuts} from './JumpCuts';
 import {LayoutNoneOutlines} from './LayoutNoneOutlines';
 import {
+	CenaIaPtBr,
+	calcularMetadadosCenaIaPtBr,
+	cenaIaPtBrDefaultProps,
+} from './LegendasPtBr/CenaIaPtBr';
+import {
 	LEGENDAS_PT_BR_DURATION_IN_FRAMES,
 	LegendasPtBr,
 } from './LegendasPtBr/LegendasPtBr';
@@ -557,6 +562,16 @@ export const Index: React.FC = () => {
 				id="legendas-pt-br"
 				component={LegendasPtBr}
 				durationInFrames={LEGENDAS_PT_BR_DURATION_IN_FRAMES}
+				fps={30}
+				width={1080}
+				height={1080}
+			/>
+			<Composition
+				id="cena-ia-pt-br"
+				component={CenaIaPtBr}
+				defaultProps={cenaIaPtBrDefaultProps}
+				calculateMetadata={calcularMetadadosCenaIaPtBr}
+				durationInFrames={240}
 				fps={30}
 				width={1080}
 				height={1080}
