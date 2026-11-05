@@ -3,42 +3,61 @@
 //
 // Uso: node gerar-narracao.mjs
 // Variáveis: AZURE_SPEECH_REGION (padrão brazilsouth), AZURE_SPEECH_KEY (opcional: em ambientes que já
-// autenticam sozinhos não é preciso), VOZ (padrão pt-BR-DonatoNeural).
+// autenticam sozinhos não é preciso), VOZ (padrão pt-BR-MacerioMultilingualNeural).
+//
+// No texto da narração, trechos entre *asteriscos* recebem ênfase (mais lentos, mais fortes e com tom marcado).
 import {execFileSync} from 'node:child_process';
 import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import ts from 'typescript';
 
 const regiao = process.env.AZURE_SPEECH_REGION ?? 'brazilsouth';
-const voz = process.env.VOZ ?? 'pt-BR-DonatoNeural';
+const voz = process.env.VOZ ?? 'pt-BR-MacerioMultilingualNeural';
 
-// Pronúncia aproximada dos nomes em inglês (o texto escrito continua o original).
-const pronuncias = {
-	'Ellis Bell': 'Élis Bél',
-	'Emily Brontë': 'Émili Brontí',
-	Emily: 'Émili',
-	Heathcliff: 'Rítclif',
-	Catherine: 'Kétrin',
-	'MTV Unplugged': 'ême tê vê Ânplâguid',
-	'Kurt Cobain': 'Kârt Coubêin',
-	Kurt: 'Kârt',
-	'Smells Like Teen Spirit': 'Smélz Laik Tín Spírit',
-	'The Man Who Sold the World': 'Dâ Mén Rú Sôuld dâ Uôrld',
-	'David Bowie': 'Dêivid Bôui',
-	Nirvana: 'Nirvâna',
+// Tom de cada série: velocidade e altura da voz, pausas de respiração (ms) e como soa a ênfase.
+const estilos = {
+	// Rock: animado, alegre.
+	'Lado B': {rate: '+4%', pitch: '+6%', virgula: 200, ponto: 450, enfase: {rate: '-6%', pitch: '+12%', volume: '+15%'}},
+	// Bíblia: ponderado, reflexivo, com pausas longas.
+	'Reflexão bíblica': {rate: '-12%', pitch: '-4%', virgula: 380, ponto: 850, enfase: {rate: '-22%', pitch: '-6%', volume: '+12%'}},
+	// Livro: contador de histórias, leve.
+	'Livro da semana': {rate: '-3%', pitch: '+1%', virgula: 260, ponto: 600, enfase: {rate: '-12%', pitch: '+6%', volume: '+12%'}},
+	// Dia a dia: conversa informal.
+	'Diário de um aprendiz': {rate: '+3%', pitch: '+3%', virgula: 180, ponto: 420, enfase: {rate: '-8%', pitch: '+8%', volume: '+10%'}},
+};
+// Falas que pedem um tom diferente do resto da série.
+const ajustes = {
+	// A morte de Kurt Cobain: mais contida, mesmo dentro do tom alegre do Lado B.
+	'lado-b-nirvana-unplugged-cena-6': {rate: '-6%', pitch: '-3%', virgula: 300, ponto: 650, enfase: {rate: '-14%', pitch: '-4%', volume: '+8%'}},
 };
 
+// Nomes lidos com pronúncia em inglês (a voz é multilíngue e troca de idioma só nesses trechos).
+const termosIngles = ['The Man Who Sold the World', 'Smells Like Teen Spirit', 'MTV Unplugged', 'Emily Brontë', 'David Bowie', 'Kurt Cobain', 'Ellis Bell', 'Heathcliff', 'Catherine', 'Emily', 'Kurt'];
+
 const escapar = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const ssml = (texto) => {
-	let corpo = escapar(texto);
-	// Substitui os termos mais longos primeiro, com um marcador para não trocar duas vezes.
-	const termos = Object.keys(pronuncias).sort((a, b) => b.length - a.length);
-	const guardados = [];
-	for (const termo of termos) {
-		corpo = corpo.split(termo).join(`\u0000${guardados.length}\u0000`);
-		guardados.push(`<sub alias="${pronuncias[termo]}">${termo}</sub>`);
+
+// Pausas de respiração depois de vírgulas e pontos, dentro de um trecho em português.
+const comPausas = (texto, estilo) =>
+	escapar(texto)
+		.replace(/([,;])\s+/g, `$1<break time="${estilo.virgula}ms"/> `)
+		.replace(/([.!?:])\s+/g, `$1<break time="${estilo.ponto}ms"/> `);
+
+const ssml = (texto, estilo) => {
+	// 1. Separa os trechos com ênfase (*...*).
+	const partes = texto.split(/\*([^*]+)\*/).map((t, i) => ({t, enfase: i % 2 === 1}));
+	let corpo = '';
+	for (const {t, enfase} of partes) {
+		if (!t) continue;
+		// 2. Dentro de cada trecho, separa os nomes em inglês.
+		const regex = new RegExp(`(${termosIngles.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`);
+		const pedacos = t.split(regex);
+		let trecho = '';
+		for (const [k, p] of pedacos.entries()) {
+			if (!p) continue;
+			trecho += k % 2 === 1 ? `<lang xml:lang="en-US">${escapar(p)}</lang>` : `<lang xml:lang="pt-BR">${comPausas(p, estilo)}</lang>`;
+		}
+		corpo += enfase ? `<prosody rate="${estilo.enfase.rate}" pitch="${estilo.enfase.pitch}" volume="${estilo.enfase.volume}">${trecho}</prosody>` : trecho;
 	}
-	corpo = corpo.replace(/\u0000(\d+)\u0000/g, (_, i) => guardados[Number(i)]);
-	return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR"><voice name="${voz}">${corpo}</voice></speak>`;
+	return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="pt-BR"><voice name="${voz}"><prosody rate="${estilo.rate}" pitch="${estilo.pitch}">${corpo}</prosody></voice></speak>`;
 };
 
 const fonte = ts.transpileModule(readFileSync('src/posts.ts', 'utf8'), {compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020}}).outputText;
@@ -49,7 +68,9 @@ const duracoes = {};
 for (const post of posts.filter((p) => p.voz === 'ia')) {
 	for (const [i, cena] of post.cenas.entries()) {
 		if (!cena.narracao) continue;
-		const arquivo = `narracao/${post.id}-cena-${i + 1}.mp3`;
+		const nome = `${post.id}-cena-${i + 1}`;
+		const arquivo = `narracao/${nome}.mp3`;
+		const estilo = ajustes[nome] ?? estilos[post.serie] ?? estilos['Livro da semana'];
 		// curl em vez de fetch: respeita o proxy do ambiente (HTTPS_PROXY).
 		execFileSync('curl', [
 			'-sS', '--fail-with-body', '-X', 'POST', `https://${regiao}.tts.speech.microsoft.com/cognitiveservices/v1`,
@@ -57,7 +78,7 @@ for (const post of posts.filter((p) => p.voz === 'ia')) {
 			'-H', 'X-Microsoft-OutputFormat: audio-48khz-192kbitrate-mono-mp3',
 			'-H', 'User-Agent: fernandorocha1805-motion',
 			...(process.env.AZURE_SPEECH_KEY ? ['-H', `Ocp-Apim-Subscription-Key: ${process.env.AZURE_SPEECH_KEY}`] : []),
-			'--data-binary', ssml(cena.narracao),
+			'--data-binary', ssml(cena.narracao, estilo),
 			'-o', `public/${arquivo}`,
 		]);
 		const segundos = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', `public/${arquivo}`], {encoding: 'utf8'}).trim());

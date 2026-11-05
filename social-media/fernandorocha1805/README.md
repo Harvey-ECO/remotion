@@ -36,16 +36,18 @@ npm run render:todos  # gera todos os vídeos e capas em out/
 
 ## Narração
 
-Os posts com `voz: 'ia'` são narrados com a voz masculina **pt-BR-DonatoNeural** (Azure Speech). O texto de cada fala fica no campo `narracao` de cada cena.
+Os posts com `voz: 'ia'` são narrados com a voz masculina **pt-BR-MacerioMultilingualNeural** (Azure Speech), que fala português do Brasil e pronuncia os nomes em inglês em inglês. O texto de cada fala fica no campo `narracao` de cada cena; trechos entre `*asteriscos*` recebem ênfase.
+
+Cada série tem um tom (velocidade, altura da voz e pausas de respiração), definido em `gerar-narracao.mjs`: Lado B alegre, Reflexão bíblica ponderada e reflexiva, Livro da semana como contador de histórias e Diário de um aprendiz como conversa informal.
 
 ```bash
 node gerar-narracao.mjs   # gera public/narracao/*.mp3 e src/narracao.json
 ```
 
 - Cada cena dura o tempo do roteiro ou o tempo da fala mais uma pausa, o que for maior.
-- Nomes em inglês recebem uma pronúncia aproximada (SSML `<sub>`), definida no próprio script.
+- Nomes em inglês são marcados com SSML `<lang xml:lang="en-US">`; a lista fica no próprio script.
 - Variáveis: `AZURE_SPEECH_REGION` (padrão `brazilsouth`) e `AZURE_SPEECH_KEY`, necessária fora de ambientes que já autenticam sozinhos.
-- Os posts com `voz: 'fernando'` serão gravados por ele.
+- Para usar a gravação do próprio Fernando, troque o post para `voz: 'fernando'`.
 
 ## Como criar um post novo
 
