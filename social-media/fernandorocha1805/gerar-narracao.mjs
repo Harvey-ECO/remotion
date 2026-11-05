@@ -15,23 +15,37 @@ const voz = process.env.VOZ ?? 'pt-BR-MacerioMultilingualNeural';
 
 // Tom de cada série: velocidade e altura da voz, pausas de respiração (ms) e como soa a ênfase.
 const estilos = {
-	// Rock: animado, alegre.
-	'Lado B': {rate: '+4%', pitch: '+6%', virgula: 200, ponto: 450, enfase: {rate: '-6%', pitch: '+12%', volume: '+15%'}},
+	// Rock: animado, alegre (sem exagero).
+	'Lado B': {rate: '+2%', pitch: '+3%', virgula: 200, ponto: 450, enfase: {rate: '-4%', pitch: '+5%', volume: '+8%'}},
 	// Bíblia: ponderado, reflexivo, com pausas longas.
 	'Reflexão bíblica': {rate: '-12%', pitch: '-4%', virgula: 380, ponto: 850, enfase: {rate: '-22%', pitch: '-6%', volume: '+12%'}},
 	// Livro: contador de histórias, leve.
-	'Livro da semana': {rate: '-3%', pitch: '+1%', virgula: 260, ponto: 600, enfase: {rate: '-12%', pitch: '+6%', volume: '+12%'}},
+	'Livro da semana': {rate: '-2%', pitch: '+0%', virgula: 260, ponto: 600, enfase: {rate: '-6%', pitch: '+3%', volume: '+6%'}},
 	// Dia a dia: conversa informal.
-	'Diário de um aprendiz': {rate: '+3%', pitch: '+3%', virgula: 180, ponto: 420, enfase: {rate: '-8%', pitch: '+8%', volume: '+10%'}},
+	'Diário de um aprendiz': {rate: '+1%', pitch: '+1%', virgula: 180, ponto: 420, enfase: {rate: '-4%', pitch: '+3%', volume: '+6%'}},
 };
 // Falas que pedem um tom diferente do resto da série.
 const ajustes = {
 	// A morte de Kurt Cobain: mais contida, mesmo dentro do tom alegre do Lado B.
-	'lado-b-nirvana-unplugged-cena-6': {rate: '-6%', pitch: '-3%', virgula: 300, ponto: 650, enfase: {rate: '-14%', pitch: '-4%', volume: '+8%'}},
+	'lado-b-nirvana-unplugged-cena-6': {rate: '-4%', pitch: '-2%', virgula: 300, ponto: 650, enfase: {rate: '-8%', pitch: '-2%', volume: '+5%'}},
 };
 
-// Nomes lidos com pronúncia em inglês (a voz é multilíngue e troca de idioma só nesses trechos).
-const termosIngles = ['The Man Who Sold the World', 'Smells Like Teen Spirit', 'MTV Unplugged', 'Emily Brontë', 'David Bowie', 'Kurt Cobain', 'Ellis Bell', 'Heathcliff', 'Catherine', 'Emily', 'Kurt'];
+// Nomes lidos em inglês: a voz é multilíngue e troca de idioma só nesses trechos, com a pronúncia
+// fixada pela transcrição fonética (IPA) e um pouco mais devagar, para ficar clara.
+const ingles = {
+	'The Man Who Sold the World': 'ðə mæn huː soʊld ðə wɝːld',
+	'Smells Like Teen Spirit': 'smɛlz laɪk tiːn ˈspɪrɪt',
+	'MTV Unplugged': 'ˌɛm tiː ˈviː ʌnˈplʌɡd',
+	'Emily Brontë': 'ˈɛməli ˈbrɒnti',
+	'David Bowie': 'ˈdeɪvɪd ˈboʊi',
+	'Kurt Cobain': 'kɝːt koʊˈbeɪn',
+	'Ellis Bell': 'ˈɛlɪs bɛl',
+	Heathcliff: 'ˈhiːθklɪf',
+	Catherine: 'ˈkæθrɪn',
+	Emily: 'ˈɛməli',
+	Kurt: 'kɝːt',
+};
+const termosIngles = Object.keys(ingles);
 
 const escapar = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -53,7 +67,7 @@ const ssml = (texto, estilo) => {
 		let trecho = '';
 		for (const [k, p] of pedacos.entries()) {
 			if (!p) continue;
-			trecho += k % 2 === 1 ? `<lang xml:lang="en-US">${escapar(p)}</lang>` : `<lang xml:lang="pt-BR">${comPausas(p, estilo)}</lang>`;
+			trecho += k % 2 === 1 ? `<lang xml:lang="en-US"><prosody rate="-8%"><phoneme alphabet="ipa" ph="${ingles[p]}">${escapar(p)}</phoneme></prosody></lang>` : `<lang xml:lang="pt-BR">${comPausas(p, estilo)}</lang>`;
 		}
 		corpo += enfase ? `<prosody rate="${estilo.enfase.rate}" pitch="${estilo.enfase.pitch}" volume="${estilo.enfase.volume}">${trecho}</prosody>` : trecho;
 	}

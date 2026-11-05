@@ -45,7 +45,7 @@ node gerar-narracao.mjs   # gera public/narracao/*.mp3 e src/narracao.json
 ```
 
 - Cada cena dura o tempo do roteiro ou o tempo da fala mais uma pausa, o que for maior.
-- Nomes em inglês são marcados com SSML `<lang xml:lang="en-US">`; a lista fica no próprio script.
+- Nomes em inglês são lidos em inglês (SSML `<lang xml:lang="en-US">`), com a pronúncia fixada por transcrição fonética IPA; a lista fica no próprio script.
 - Variáveis: `AZURE_SPEECH_REGION` (padrão `brazilsouth`) e `AZURE_SPEECH_KEY`, necessária fora de ambientes que já autenticam sozinhos.
 - Para usar a gravação do próprio Fernando, troque o post para `voz: 'fernando'`.
 
