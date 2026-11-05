@@ -55,6 +55,11 @@ const estrangeiros = {
 	'Ichiro Kishimi': ['en-US', 'ˈiːtʃiroʊ kiˈʃiːmi'],
 	'Fumitake Koga': ['en-US', 'fuːmiˈtɑːkeɪ ˈkoʊɡə'],
 	'Alfred Adler': ['de-DE', 'ˈalfʁeːt ˈaːdlɐ'],
+	'Spin the Black Circle': ['en-US', 'spɪn ðə blæk ˈsɝːkəl'],
+	'Eddie Vedder': ['en-US', 'ˈɛdi ˈvɛdɚ'],
+	'Better Man': ['en-US', 'ˈbɛɾɚ mæn'],
+	'Pearl Jam': ['en-US', 'pɝːl dʒæm'],
+	Vitalogy: ['en-US', 'vaɪˈtɑːlədʒi'],
 };
 const termosEstrangeiros = Object.keys(estrangeiros);
 
