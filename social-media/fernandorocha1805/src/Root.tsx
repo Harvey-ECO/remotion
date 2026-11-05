@@ -1,6 +1,7 @@
 import React from 'react';
 import {Composition} from 'remotion';
 import {FPS} from './estilo';
+import {quadrosDoPost} from './duracoes';
 import {posts} from './posts';
 import {Reel} from './Reel';
 
@@ -15,7 +16,7 @@ export const RemotionRoot: React.FC = () => (
 				fps={FPS}
 				width={1080}
 				height={1920}
-				durationInFrames={Math.round(post.cenas.reduce((soma, c) => soma + c.segundos, 0) * FPS)}
+				durationInFrames={quadrosDoPost(post)}
 			/>
 		))}
 	</>

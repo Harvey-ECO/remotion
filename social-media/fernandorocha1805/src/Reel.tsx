@@ -2,14 +2,17 @@ import {fitText} from '@remotion/layout-utils';
 import React from 'react';
 import {
 	AbsoluteFill,
+	Audio,
 	interpolate,
 	random,
 	Sequence,
+	staticFile,
 	spring,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
 import {cores, FPS, montserrat, PERFIL, playfair, temaDaSerie, type Tema} from './estilo';
+import {ATRASO_FALA, arquivoNarracao, quadrosDaCena} from './duracoes';
 import {Fundo, Velocimetro} from './fundos';
 import type {Cena, Post} from './tipos';
 
@@ -225,9 +228,8 @@ const saida = (tema: Tema, frame: number, total: number): React.CSSProperties =>
 	return {transform: `scale(${zoom})`, filter: `brightness(${1 + p * 2.5})`, opacity: 1 - p};
 };
 
-const ConteudoCena: React.FC<{cena: Cena; tema: Tema}> = ({cena, tema}) => {
+const ConteudoCena: React.FC<{cena: Cena; tema: Tema; total: number}> = ({cena, tema, total}) => {
 	const frame = useCurrentFrame();
-	const total = cena.segundos * FPS;
 	return (
 		<AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', padding: '0 90px', textAlign: 'center', color: cores.branco, ...saida(tema, frame, total)}}>
 			{cena.tipo === 'texto' && <Linhas linhas={cena.linhas} tamanho={cena.destaque ? tema.tamanhoDestaque : tema.tamanho} inicio={0} tema={tema} />}
@@ -243,14 +245,19 @@ export const Reel: React.FC<{post: Post}> = ({post}) => {
 	const {fps, durationInFrames} = useVideoConfig();
 	const tema = temaDaSerie(post.serie);
 	const selo = spring({frame, fps, config: {damping: 14}});
-	const inicios = post.cenas.reduce<number[]>((lista, cena, i) => [...lista, i === 0 ? 0 : lista[i - 1] + post.cenas[i - 1].segundos * FPS], []);
+	const inicios = post.cenas.reduce<number[]>((lista, _, i) => [...lista, i === 0 ? 0 : lista[i - 1] + quadrosDaCena(post, i - 1)], []);
 	const progresso = frame / durationInFrames;
 	return (
 		<AbsoluteFill style={{backgroundColor: cores.marinho}}>
 			<Fundo tema={tema} inicios={inicios} />
 			{post.cenas.map((cena, i) => (
-				<Sequence key={i} from={inicios[i]} durationInFrames={cena.segundos * FPS}>
-					<ConteudoCena cena={cena} tema={tema} />
+				<Sequence key={i} from={inicios[i]} durationInFrames={quadrosDaCena(post, i)}>
+					<ConteudoCena cena={cena} tema={tema} total={quadrosDaCena(post, i)} />
+					{arquivoNarracao(post, i) === null ? null : (
+						<Sequence from={ATRASO_FALA}>
+							<Audio src={staticFile(arquivoNarracao(post, i) as string)} />
+						</Sequence>
+					)}
 				</Sequence>
 			))}
 			{/* Selo da série, dentro da área segura do Reels */}

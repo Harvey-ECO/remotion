@@ -34,6 +34,19 @@ npm run studio        # pré-visualização no navegador
 npm run render:todos  # gera todos os vídeos e capas em out/
 ```
 
+## Narração
+
+Os posts com `voz: 'ia'` são narrados com a voz masculina **pt-BR-DonatoNeural** (Azure Speech). O texto de cada fala fica no campo `narracao` de cada cena.
+
+```bash
+node gerar-narracao.mjs   # gera public/narracao/*.mp3 e src/narracao.json
+```
+
+- Cada cena dura o tempo do roteiro ou o tempo da fala mais uma pausa, o que for maior.
+- Nomes em inglês recebem uma pronúncia aproximada (SSML `<sub>`), definida no próprio script.
+- Variáveis: `AZURE_SPEECH_REGION` (padrão `brazilsouth`) e `AZURE_SPEECH_KEY`, necessária fora de ambientes que já autenticam sozinhos.
+- Os posts com `voz: 'fernando'` serão gravados por ele.
+
 ## Como criar um post novo
 
 1. Abra `src/posts.ts`.
