@@ -282,6 +282,10 @@ import {
 } from './Issue8974TimelineInteractivity';
 import {JumpCuts, SAMPLE_SECTIONS, calculateMetadataJumpCuts} from './JumpCuts';
 import {LayoutNoneOutlines} from './LayoutNoneOutlines';
+import {
+	LEGENDAS_PT_BR_DURATION_IN_FRAMES,
+	LegendasPtBr,
+} from './LegendasPtBr/LegendasPtBr';
 import {LightLeakExample} from './LightLeak';
 import {LightLeakAnimatedSize} from './LightLeak/AnimatedSize';
 import {LoopDisplayTestComp} from './LoopDisplayTest';
@@ -548,6 +552,14 @@ export const Index: React.FC = () => {
 				fps={30}
 				width={1080}
 				height={CAPTIONS_HEIGHT}
+			/>
+			<Composition
+				id="legendas-pt-br"
+				component={LegendasPtBr}
+				durationInFrames={LEGENDAS_PT_BR_DURATION_IN_FRAMES}
+				fps={30}
+				width={1080}
+				height={1080}
 			/>
 			<Folder name="copilot-tests">
 				<Composition
