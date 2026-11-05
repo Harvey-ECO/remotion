@@ -8,6 +8,7 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+import {fitText} from '@remotion/layout-utils';
 import {cores, FPS, montserrat, PERFIL, playfair} from './estilo';
 import type {Cena, Post} from './tipos';
 
@@ -59,6 +60,11 @@ const Palavras: React.FC<{
 
 // Distribui as linhas da cena, cada uma começando depois da anterior.
 const Linhas: React.FC<{linhas: string[]; tamanho: number; inicio: number}> = ({linhas, tamanho, inicio}) => {
+	// Mede cada linha e reduz a letra quando alguma não cabe em 880 px, para nenhuma frase quebrar no meio.
+	const tamanhoFinal = Math.min(
+		tamanho,
+		...linhas.map((l) => Math.floor(fitText({text: l.replace(/\*/g, ''), withinWidth: 880, fontFamily: montserrat, fontWeight: 800}).fontSize)),
+	);
 	let atraso = inicio;
 	return (
 		<>
@@ -71,7 +77,7 @@ const Linhas: React.FC<{linhas: string[]; tamanho: number; inicio: number}> = ({
 						frase={linha}
 						inicio={comeco}
 						ritmo={3}
-						estilo={{fontFamily: montserrat, fontWeight: 800, fontSize: tamanho, lineHeight: 1.18}}
+						estilo={{fontFamily: montserrat, fontWeight: 800, fontSize: tamanhoFinal, lineHeight: 1.18}}
 					/>
 				);
 			})}
