@@ -30,22 +30,30 @@ const ajustes = {
 	'lado-b-nirvana-unplugged-cena-6': {rate: '-4%', pitch: '-2%', virgula: 300, ponto: 650, enfase: {rate: '-8%', pitch: '-2%', volume: '+5%'}},
 };
 
-// Nomes lidos em inglês: a voz é multilíngue e troca de idioma só nesses trechos, com a pronúncia
+// Nomes estrangeiros: a voz é multilíngue e troca de idioma só nesses trechos, com a pronúncia
 // fixada pela transcrição fonética (IPA) e um pouco mais devagar, para ficar clara.
-const ingles = {
-	'The Man Who Sold the World': 'ðə mæn huː soʊld ðə wɝːld',
-	'Smells Like Teen Spirit': 'smɛlz laɪk tiːn ˈspɪrɪt',
-	'MTV Unplugged': 'ˌɛm tiː ˈviː ʌnˈplʌɡd',
-	'Emily Brontë': 'ˈɛməli ˈbrɒnti',
-	'David Bowie': 'ˈdeɪvɪd ˈboʊi',
-	'Kurt Cobain': 'kɝːt koʊˈbeɪn',
-	'Ellis Bell': 'ˈɛlɪs bɛl',
-	Heathcliff: 'ˈhiːθklɪf',
-	Catherine: 'ˈkæθrɪn',
-	Emily: 'ˈɛməli',
-	Kurt: 'kɝːt',
+const estrangeiros = {
+	'The Man Who Sold the World': ['en-US', 'ðə mæn huː soʊld ðə wɝːld'],
+	'Smells Like Teen Spirit': ['en-US', 'smɛlz laɪk tiːn ˈspɪrɪt'],
+	'Gustave Flaubert': ['fr-FR', 'ɡys.tav flo.bɛʁ'],
+	'Madame Bovary': ['fr-FR', 'ma.dam bɔ.va.ʁi'],
+	'Ernest Pinard': ['fr-FR', 'ɛʁ.nɛst pi.naʁ'],
+	'No Leaf Clover': ['en-US', 'noʊ liːf ˈkloʊvɚ'],
+	'MTV Unplugged': ['en-US', 'ˌɛm tiː ˈviː ʌnˈplʌɡd'],
+	'Michael Kamen': ['en-US', 'ˈmaɪkəl ˈkeɪmən'],
+	'Emily Brontë': ['en-US', 'ˈɛməli ˈbrɒnti'],
+	'David Bowie': ['en-US', 'ˈdeɪvɪd ˈboʊi'],
+	'Kurt Cobain': ['en-US', 'kɝːt koʊˈbeɪn'],
+	'Ellis Bell': ['en-US', 'ˈɛlɪs bɛl'],
+	Heathcliff: ['en-US', 'ˈhiːθklɪf'],
+	Catherine: ['en-US', 'ˈkæθrɪn'],
+	Berkeley: ['en-US', 'ˈbɝːkli'],
+	Flaubert: ['fr-FR', 'flo.bɛʁ'],
+	'S&M': ['en-US', 'ˌɛs ən ˈɛm'],
+	Emily: ['en-US', 'ˈɛməli'],
+	Kurt: ['en-US', 'kɝːt'],
 };
-const termosIngles = Object.keys(ingles);
+const termosEstrangeiros = Object.keys(estrangeiros);
 
 const escapar = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -62,12 +70,12 @@ const ssml = (texto, estilo) => {
 	for (const {t, enfase} of partes) {
 		if (!t) continue;
 		// 2. Dentro de cada trecho, separa os nomes em inglês.
-		const regex = new RegExp(`(${termosIngles.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`);
+		const regex = new RegExp(`(${termosEstrangeiros.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`);
 		const pedacos = t.split(regex);
 		let trecho = '';
 		for (const [k, p] of pedacos.entries()) {
 			if (!p) continue;
-			trecho += k % 2 === 1 ? `<lang xml:lang="en-US"><prosody rate="-8%"><phoneme alphabet="ipa" ph="${ingles[p]}">${escapar(p)}</phoneme></prosody></lang>` : `<lang xml:lang="pt-BR">${comPausas(p, estilo)}</lang>`;
+			trecho += k % 2 === 1 ? `<lang xml:lang="${estrangeiros[p][0]}"><prosody rate="-8%"><phoneme alphabet="ipa" ph="${estrangeiros[p][1]}">${escapar(p)}</phoneme></prosody></lang>` : `<lang xml:lang="pt-BR">${comPausas(p, estilo)}</lang>`;
 		}
 		corpo += enfase ? `<prosody rate="${estilo.enfase.rate}" pitch="${estilo.enfase.pitch}" volume="${estilo.enfase.volume}">${trecho}</prosody>` : trecho;
 	}
