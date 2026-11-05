@@ -37,6 +37,7 @@ export type Tema = {
 // Livro: máquina de escrever e serifa clássica. Rock: cartaz de show. Fé: suave. Moto: esportiva.
 const temas: Record<string, Tema> = {
 	'Livro da semana': {chave: 'livro', fonte: cormorant, peso: 600, maiusculas: false, tamanho: 100, tamanhoDestaque: 124},
+	'Além da toga': {chave: 'livro', fonte: cormorant, peso: 600, maiusculas: false, tamanho: 100, tamanhoDestaque: 124},
 	'Lado B': {chave: 'rock', fonte: bebas, peso: 400, maiusculas: true, tamanho: 130, tamanhoDestaque: 170},
 	'Reflexão bíblica': {chave: 'fe', fonte: montserrat, peso: 800, maiusculas: false, tamanho: 82, tamanhoDestaque: 104},
 	'Diário de um aprendiz': {chave: 'moto', fonte: racing, peso: 400, maiusculas: false, tamanho: 96, tamanhoDestaque: 122},

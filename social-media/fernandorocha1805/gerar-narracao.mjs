@@ -7,7 +7,7 @@
 //
 // No texto da narração, trechos entre *asteriscos* recebem ênfase (mais lentos, mais fortes e com tom marcado).
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import ts from 'typescript';
 
 const regiao = process.env.AZURE_SPEECH_REGION ?? 'brazilsouth';
@@ -52,6 +52,9 @@ const estrangeiros = {
 	'S&M': ['en-US', 'ˌɛs ən ˈɛm'],
 	Emily: ['en-US', 'ˈɛməli'],
 	Kurt: ['en-US', 'kɝːt'],
+	'Ichiro Kishimi': ['en-US', 'ˈiːtʃiroʊ kiˈʃiːmi'],
+	'Fumitake Koga': ['en-US', 'fuːmiˈtɑːkeɪ ˈkoʊɡə'],
+	'Alfred Adler': ['de-DE', 'ˈalfʁeːt ˈaːdlɐ'],
 };
 const termosEstrangeiros = Object.keys(estrangeiros);
 
@@ -86,8 +89,10 @@ const fonte = ts.transpileModule(readFileSync('src/posts.ts', 'utf8'), {compiler
 const {posts} = await import(`data:text/javascript;base64,${Buffer.from(fonte).toString('base64')}`);
 
 mkdirSync('public/narracao', {recursive: true});
-const duracoes = {};
-for (const post of posts.filter((p) => p.voz === 'ia')) {
+// POSTS=id1,id2 gera só esses posts e mantém as durações já medidas dos outros.
+const somente = process.env.POSTS ? process.env.POSTS.split(',') : null;
+const duracoes = somente && existsSync('src/narracao.json') ? JSON.parse(readFileSync('src/narracao.json', 'utf8')) : {};
+for (const post of posts.filter((p) => p.voz === 'ia' && (!somente || somente.includes(p.id)))) {
 	for (const [i, cena] of post.cenas.entries()) {
 		if (!cena.narracao) continue;
 		const nome = `${post.id}-cena-${i + 1}`;
@@ -108,4 +113,4 @@ for (const post of posts.filter((p) => p.voz === 'ia')) {
 		console.log(`${arquivo}  ${duracoes[arquivo]} s`);
 	}
 }
-writeFileSync('src/narracao.json', JSON.stringify(duracoes, null, '\t') + '\n');
+writeFileSync('src/narracao.json', JSON.stringify(Object.fromEntries(Object.entries(duracoes).sort()), null, '\t') + '\n');

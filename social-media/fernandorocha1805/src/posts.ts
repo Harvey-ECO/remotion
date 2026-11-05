@@ -143,4 +143,18 @@ export const posts: Post[] = [
 			{narracao: 'Esqueci alguma coisa? Manda para um amigo motociclista.', tipo: 'cta', segundos: 4, linhas: ['Esqueci', 'alguma coisa?'], apoio: 'Manda para um amigo motociclista.'},
 		],
 	},
+	{
+		id: 'alem-da-toga-coragem-de-nao-agradar',
+		serie: 'Além da toga',
+		voz: 'ia',
+		cenas: [
+			{narracao: 'Um livro que não é de Direito, mas ajuda muito *quem advoga*.', tipo: 'texto', segundos: 4, destaque: true, linhas: ['Não é de Direito,', 'mas ajuda', 'quem *advoga*.']},
+			{narracao: 'A coragem de não agradar, de Ichiro Kishimi e Fumitake Koga.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['*A coragem*', '*de não agradar*,', 'de Ichiro Kishimi', 'e Fumitake Koga.']},
+			{narracao: 'É um diálogo entre um filósofo e um jovem, inspirado nas ideias de Alfred Adler.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['Um filósofo,', 'um jovem', 'e as ideias de', '*Alfred Adler*.']},
+			{narracao: 'A lição que mais me marcou: *separar as tarefas*.', tipo: 'texto', segundos: 4, destaque: false, linhas: ['A lição que', 'mais me marcou:', '*separar*', '*as tarefas*.']},
+			{narracao: 'A decisão do juiz é tarefa do juiz. A minha é fazer o *melhor trabalho* possível.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['A decisão do juiz', 'é tarefa do juiz.', 'A minha é fazer', 'o *melhor trabalho*.']},
+			{narracao: 'E, às vezes, falar a verdade ao cliente exige *coragem*.', tipo: 'texto', segundos: 4.5, destaque: false, linhas: ['Falar a verdade', 'ao cliente', 'exige *coragem*.']},
+			{narracao: 'Já leu? Manda para um colega de profissão.', tipo: 'cta', segundos: 4, linhas: ['Já leu?'], apoio: 'Manda para um colega de profissão.'},
+		],
+	},
 ];
