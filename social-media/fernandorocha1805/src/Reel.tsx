@@ -131,7 +131,7 @@ const Linhas: React.FC<{linhas: string[]; tamanho: number; inicio: number; tema:
 	const prepara = (l: string) => (tema.maiusculas ? l.toUpperCase() : l);
 	const tamanhoFinal = Math.min(
 		tamanho,
-		...linhas.map((l) => Math.floor(fitText({text: prepara(l.replace(/\*/g, '')), withinWidth: 880, fontFamily: tema.fonte, fontWeight: tema.peso}).fontSize)),
+		...linhas.map((l) => Math.floor(fitText({text: prepara(l.replace(/\*/g, '')), withinWidth: 880, fontFamily: tema.fonte, fontWeight: tema.peso, letterSpacing: tema.chave === 'rock' ? '2px' : undefined}).fontSize)),
 	);
 	const estilo: React.CSSProperties = {
 		fontFamily: tema.fonte,
