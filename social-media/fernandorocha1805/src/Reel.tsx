@@ -12,7 +12,8 @@ import {
 	useVideoConfig,
 } from 'remotion';
 import {cores, FPS, montserrat, PERFIL, playfair, temaDaSerie, type Tema} from './estilo';
-import {ATRASO_FALA, arquivoNarracao, quadrosDaCena} from './duracoes';
+import {ATRASO_FALA, arquivoGravacao, arquivoNarracao, INTRODUCAO_GRAVADA, quadrosDaCena} from './duracoes';
+import {musicas} from './musicas';
 import {Fundo, Velocimetro} from './fundos';
 import type {Cena, Post} from './tipos';
 
@@ -250,6 +251,20 @@ export const Reel: React.FC<{post: Post}> = ({post}) => {
 	return (
 		<AbsoluteFill style={{backgroundColor: cores.marinho}}>
 			<Fundo tema={tema} inicios={inicios} />
+			{arquivoGravacao(post) === null ? null : (
+				<Sequence from={INTRODUCAO_GRAVADA}>
+					<Audio src={staticFile(arquivoGravacao(post) as string)} />
+				</Sequence>
+			)}
+			{musicas[post.id] === undefined ? null : (
+				<Audio
+					src={staticFile(musicas[post.id].arquivo)}
+					volume={(f) =>
+						musicas[post.id].volume *
+						interpolate(f, [0, 15, durationInFrames - 45, durationInFrames], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})
+					}
+				/>
+			)}
 			{post.cenas.map((cena, i) => (
 				<Sequence key={i} from={inicios[i]} durationInFrames={quadrosDaCena(post, i)}>
 					<ConteudoCena cena={cena} tema={tema} total={quadrosDaCena(post, i)} />

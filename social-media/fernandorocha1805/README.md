@@ -49,6 +49,11 @@ node gerar-narracao.mjs   # gera public/narracao/*.mp3 e src/narracao.json
 - Variáveis: `AZURE_SPEECH_REGION` (padrão `brazilsouth`) e `AZURE_SPEECH_KEY`, necessária fora de ambientes que já autenticam sozinhos.
 - Para usar a gravação do próprio Fernando, troque o post para `voz: 'fernando'`.
 
+## Voz gravada e trilhas
+
+- Posts com `voz: 'fernando'` usam a gravação contínua `public/narracao/<id>-completo.mp3` (limpa de ruído e com o volume normalizado). As durações de cada cena ficam em `src/narracao.json`, nas chaves `<id>-cena-<n>.mp3`, e as cenas acompanham a fala.
+- `python3 gerar-musica.py` gera as trilhas de fundo dos especiais (requer numpy): "Noite Feliz" e "Auld Lang Syne", ambas em domínio público. O volume de cada trilha fica em `src/musicas.ts`.
+
 ## Como criar um post novo
 
 1. Abra `src/posts.ts`.
