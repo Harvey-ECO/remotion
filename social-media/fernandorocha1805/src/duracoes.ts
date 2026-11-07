@@ -9,8 +9,8 @@ export const ATRASO_FALA = 6;
 const PAUSA_DEPOIS_DA_FALA = 0.35; // segundos
 
 // Voz gravada (contínua): introdução só com música antes da fala e final para a música respirar.
-export const INTRODUCAO_GRAVADA = 24;
-const FINAL_GRAVADO = 60;
+export const INTRODUCAO_GRAVADA = 45;
+const FINAL_GRAVADO = 90;
 
 // Gravação contínua do Fernando, quando existe: um único áudio para o post inteiro.
 export const arquivoGravacao = (post: Post): string | null => {
