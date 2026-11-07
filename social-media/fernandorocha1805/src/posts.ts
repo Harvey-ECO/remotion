@@ -417,7 +417,7 @@ export const posts: Post[] = [
 		cenas: [
 			{narracao: 'As leituras que eu levo para *dois mil e vinte e sete*.', tipo: 'texto', segundos: 4, destaque: true, linhas: ['As leituras que', 'levo para', '*2027*.']},
 			{narracao: 'A arte da prudência, de Baltasar Gracián: *trezentos conselhos* escritos em mil seiscentos e quarenta e sete.', tipo: 'texto', segundos: 6, destaque: false, linhas: ['*A arte*', '*da prudência*,', 'de Baltasar Gracián.']},
-			{narracao: 'O que é ser advogado? Uma pergunta que todo advogado deveria se fazer *sempre*.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['*O que é ser*', '*advogado?*']},
+			{narracao: 'O que é ser advogado?, as memórias de Técio Lins e Silva. Uma pergunta que todo advogado deveria se fazer *sempre*.', tipo: 'texto', segundos: 5.5, destaque: false, linhas: ['*O que é ser*', '*advogado?*,', 'de Técio Lins e Silva.']},
 			{narracao: 'Sociedade do cansaço, de Byung-Chul Han, sobre o *esgotamento* de quem nunca para.', tipo: 'texto', segundos: 5.5, destaque: false, linhas: ['*Sociedade*', '*do cansaço*,', 'de Byung-Chul Han.']},
 			{narracao: 'O poder dos quietos, de Susan Cain, sobre a *força* dos introvertidos.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['*O poder*', '*dos quietos*,', 'de Susan Cain.']},
 			{narracao: 'E A sutil arte de ligar o... você sabe o quê, de Mark Manson.', tipo: 'texto', segundos: 5, destaque: false, linhas: ['*A sutil arte de*', '*ligar o f∗da-se*,', 'de Mark Manson.']},
