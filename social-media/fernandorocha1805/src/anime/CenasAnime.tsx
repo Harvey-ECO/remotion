@@ -111,7 +111,7 @@ const useBoca = (arquivo: string, inicioVoz: number): number => {
 };
 
 // Caixa de diálogo de visual novel, com o texto da fala sendo digitado.
-const Dialogo: React.FC<{post: Post; inicios: number[]; fim: number}> = ({post, inicios, fim}) => {
+export const Dialogo: React.FC<{post: Post; inicios: number[]; fim: number}> = ({post, inicios, fim}) => {
 	const frame = useCurrentFrame();
 	const i = ultimoIndice(inicios, frame);
 	if (i < 0 || frame > fim) return null;
@@ -262,7 +262,7 @@ export const NatalAnime: React.FC<{post: Post; config: ConfigAnime}> = ({post, c
 	);
 };
 
-const Titulo: React.FC<{texto: string; mostrar: boolean}> = ({texto, mostrar}) => {
+export const Titulo: React.FC<{texto: string; mostrar: boolean}> = ({texto, mostrar}) => {
 	const frame = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
 	const s = mostrar ? spring({frame: frame - (durationInFrames - 100), fps: 30, config: {damping: 10}}) : 0;
@@ -285,7 +285,7 @@ const LinhasDeVelocidade: React.FC<{frame: number; intensidade: number}> = ({fra
 	</svg>
 );
 
-const Fogos: React.FC<{frame: number; inicio: number; area: [number, number, number, number]}> = ({frame, inicio, area}) => (
+export const Fogos: React.FC<{frame: number; inicio: number; area: [number, number, number, number]}> = ({frame, inicio, area}) => (
 	<g>
 		{Array.from({length: 6}).map((_, k) => {
 			const t0 = inicio + k * 14;
