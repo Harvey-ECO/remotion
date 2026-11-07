@@ -21,6 +21,9 @@ const estilos = {
 	'Reflexão bíblica': {rate: '-12%', pitch: '-4%', virgula: 380, ponto: 850, enfase: {rate: '-22%', pitch: '-6%', volume: '+12%'}},
 	// Livro: contador de histórias, leve.
 	'Livro da semana': {rate: '-2%', pitch: '+0%', virgula: 260, ponto: 600, enfase: {rate: '-6%', pitch: '+3%', volume: '+6%'}},
+	// Mensagens de Natal e Ano Novo: calorosas e serenas.
+	'Feliz Natal': {rate: '-6%', pitch: '-1%', virgula: 320, ponto: 650, enfase: {rate: '-12%', pitch: '+3%', volume: '+8%'}},
+	'Feliz 2027': {rate: '-4%', pitch: '+1%', virgula: 300, ponto: 600, enfase: {rate: '-10%', pitch: '+4%', volume: '+8%'}},
 	// Dia a dia: conversa informal.
 	'Diário de um aprendiz': {rate: '+1%', pitch: '+1%', virgula: 180, ponto: 420, enfase: {rate: '-4%', pitch: '+3%', volume: '+6%'}},
 };
@@ -60,6 +63,18 @@ const estrangeiros = {
 	'Better Man': ['en-US', 'ˈbɛɾɚ mæn'],
 	'Pearl Jam': ['en-US', 'pɝːl dʒæm'],
 	Vitalogy: ['en-US', 'vaɪˈtɑːlədʒi'],
+	"Do They Know It's Christmas": ['en-US', 'duː ðeɪ noʊ ɪts ˈkɹɪsməs'],
+	'Ebenezer Scrooge': ['en-US', 'ˌɛbəˈniːzɚ skɹuːdʒ'],
+	'Charles Dickens': ['en-US', 'ˈtʃɑːɹlz ˈdɪkɪnz'],
+	'Simon Le Bon': ['en-US', 'ˈsaɪmən lə ˈbɑn'],
+	'Duran Duran': ['en-US', 'dʊˈɹæn dʊˈɹæn'],
+	'Arthur Bloch': ['en-US', 'ˈɑɹθɚ blɑk'],
+	'Bob Geldof': ['en-US', 'bɑb ˈɡɛldɑf'],
+	'Midge Ure': ['en-US', 'mɪdʒ ˈjʊɚ'],
+	Incesticide: ['en-US', 'ɪnˈsɛstɪsaɪd'],
+	Scrooge: ['en-US', 'skɹuːdʒ'],
+	Dickens: ['en-US', 'ˈdɪkɪnz'],
+	Adler: ['de-DE', 'ˈaːdlɐ'],
 };
 const termosEstrangeiros = Object.keys(estrangeiros);
 

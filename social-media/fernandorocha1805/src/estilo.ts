@@ -40,6 +40,8 @@ const temas: Record<string, Tema> = {
 	'Além da toga': {chave: 'livro', fonte: cormorant, peso: 600, maiusculas: false, tamanho: 100, tamanhoDestaque: 124},
 	'Lado B': {chave: 'rock', fonte: bebas, peso: 400, maiusculas: true, tamanho: 130, tamanhoDestaque: 170},
 	'Reflexão bíblica': {chave: 'fe', fonte: montserrat, peso: 800, maiusculas: false, tamanho: 82, tamanhoDestaque: 104},
+	'Feliz Natal': {chave: 'fe', fonte: montserrat, peso: 800, maiusculas: false, tamanho: 96, tamanhoDestaque: 140},
+	'Feliz 2027': {chave: 'fe', fonte: montserrat, peso: 800, maiusculas: false, tamanho: 96, tamanhoDestaque: 140},
 	'Diário de um aprendiz': {chave: 'moto', fonte: racing, peso: 400, maiusculas: false, tamanho: 96, tamanhoDestaque: 122},
 };
 

@@ -8,10 +8,10 @@ const duracoes: Record<string, number> = narracao;
 export const ATRASO_FALA = 6;
 const PAUSA_DEPOIS_DA_FALA = 0.35; // segundos
 
-// Arquivo de narração da cena, quando o post é narrado por voz sintetizada e o áudio já foi gerado.
+// Arquivo de narração da cena, quando o áudio já existe (voz sintetizada ou gravada pelo Fernando).
 export const arquivoNarracao = (post: Post, indice: number): string | null => {
 	const arquivo = `narracao/${post.id}-cena-${indice + 1}.mp3`;
-	return post.voz === 'ia' && arquivo in duracoes ? arquivo : null;
+	return arquivo in duracoes ? arquivo : null;
 };
 
 // A cena dura o tempo do roteiro ou o tempo da fala mais uma pausa, o que for maior.
