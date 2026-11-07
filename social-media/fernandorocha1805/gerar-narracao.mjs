@@ -75,6 +75,10 @@ const estrangeiros = {
 	Scrooge: ['en-US', 'skɹuːdʒ'],
 	Dickens: ['en-US', 'ˈdɪkɪnz'],
 	Adler: ['de-DE', 'ˈaːdlɐ'],
+	'Baltasar Gracián': ['es-ES', 'baltaˈsaɾ ɡɾaˈθjan'],
+	'Byung-Chul Han': ['en-US', 'bjʌŋ tʃʊl hɑn'],
+	'Susan Cain': ['en-US', 'ˈsuːzən keɪn'],
+	'Mark Manson': ['en-US', 'mɑɹk ˈmænsən'],
 };
 const termosEstrangeiros = Object.keys(estrangeiros);
 
